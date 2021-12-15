@@ -22,9 +22,11 @@
 
 # from: https://github.com/BtbN/FFmpeg-Builds/blob/4eb20ade1bfdd7c1ff8f23921b7c366a20157edb/util/prunetags.sh
 
+# Modified for use in libass-containers
+
 set -e
 git fetch --tags
-TAGS=( $(git tag -l "autobuild-*" | sort -r) )
+TAGS=( $(git tag -l "containers-*" | sort -r) )
 
 KEEP_LATEST=14
 KEEP_MONTHLY=12
@@ -40,7 +42,7 @@ for TAG in ${TAGS[@]}; do
     fi
 
     if [[ ${#MONTHLY_TAGS[@]} -lt ${KEEP_MONTHLY} ]]; then
-        TAG_MONTH="$(echo $TAG | cut -d- -f3)"
+        TAG_MONTH="$(echo $TAG | cut -d- -f2 | cut -c5,6)"
 
         if [[ ${TAG_MONTH} != ${CUR_MONTH} ]]; then
             CUR_MONTH="${TAG_MONTH}"
