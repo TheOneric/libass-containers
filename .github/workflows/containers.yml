@@ -1,0 +1,57 @@
+name: Build and Publish Container Images
+
+on:
+  push:
+    branches: [master]
+    paths-ignore:
+      - '**.rst'
+      - '.gitignore'
+
+jobs:
+  build_images:
+    name: Build Container Images
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        image: [oldlibs]
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v2
+      - name: Build image
+        run: |
+          docker build -t "${{ matrix.image }}" .
+          docker save "${{ matrix.image }}":latest \
+            | zstd -9 > /tmp/"${{ matrix.image }}".tar.zst
+      # Repeated uploads to the same name append to the artifact archive
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: all-images
+          path: /tmp/${{ matrix.image }}.tar.zst
+
+  publish_images:
+    needs: build_images
+    name: Publish
+    runs-on: ubuntu-latest
+    steps:
+      # Checkout the repo so hub knows where to create a release
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Download artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: all-images
+          path: /tmp/images/
+      - name: Create Release
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          set -xe
+          tag="containers-$(date +'%Y%m%d-%H%M%S')"
+          asset_opts="$(for i in /tmp/images/*.zst ; do echo \-a "$i" ; done)"
+          hub release create $asset_opts -m "$tag" -t master "$tag"
+      - name: Prune Old Releases
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          bash ./.github/scripts/prunetags.sh
