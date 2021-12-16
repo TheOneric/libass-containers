@@ -31,8 +31,7 @@ mkdir -p /tmp/build
 cd /tmp/build
 
 ## GNU FriBidi
-### libass min version 0.19.0, but 0.19.1 is the first "CVS release"
-### and I couldn't locate a 0.19.0 tarball
+### 0.19.1 is the first "fribidi2" release, 0.19.0 was an indev version used from 2004-2008
 urlfmt='https://github.com/fribidi/fribidi/releases/download/FRIBIDI_0_19_1/fribidi-%s.tar.gz'
 tarball_build fribidi "$urlfmt" "0.19.1"
 
