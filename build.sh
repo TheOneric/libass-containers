@@ -1,8 +1,6 @@
 #!/bin/sh
 
-mkdir -p /tmp/build
 set -e
-
 
 # Build from autotools(-like) tarballs
 tarball_build() (
@@ -17,7 +15,7 @@ tarball_build() (
     version="$3"
     shift 3
 
-    # --insecure: Ignore cert-errors as installed certs are (too) old
+    # Add --insecure if installed certs become too old, to ignore verification errors
     curl --location "$url" > "$filename"
     tar xf "$filename"
     rm "$filename"
@@ -29,26 +27,25 @@ tarball_build() (
     make clean
 )
 
-## FriBiDi
+mkdir -p /tmp/build
 cd /tmp/build
+
+## GNU FriBidi
 ### libass min version 0.19.0, but 0.19.1 is the first "CVS release"
 ### and I couldn't locate a 0.19.0 tarball
 urlfmt='https://github.com/fribidi/fribidi/releases/download/FRIBIDI_0_19_1/fribidi-%s.tar.gz'
 tarball_build fribidi "$urlfmt" "0.19.1"
 
 ## FreeType2 (without HarfBuzz)
-cd /tmp/build
 ### Internal version 9.17.3 == external version 2.3.6
 urlfmt='https://download.savannah.gnu.org/releases/freetype/freetype-old/freetype-%s.tar.bz2'
 tarball_build freetype "$urlfmt" "2.3.6"
 
 ## HarfBuzz
-cd /tmp/build
 urlfmt='https://www.freedesktop.org/software/harfbuzz/release/harfbuzz-%s.tar.bz2'
 tarball_build harfbuzz "$urlfmt" "1.2.3"
 
 ## Fontconfig
-cd /tmp/build
 urlfmt='https://www.freedesktop.org/software/fontconfig/release/fontconfig-%s.tar.bz2'
 tarball_build fontconfig "$urlfmt" "2.10.92"
 
