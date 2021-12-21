@@ -14,7 +14,7 @@ EOF
 # Grab LTS security updates and newer HTTPS certificates
 echo "deb http://security.debian.org/ stretch/updates main" >> /etc/apt/sources.list
 apt-get update && apt-get upgrade -y --with-new-pkgs
-apt-get autoremove --purge
+apt-get autoremove --purge -y
 
 # Toolchain and not self-built libs
 # to build libass-deps from tarballs
