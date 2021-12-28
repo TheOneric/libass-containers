@@ -6,6 +6,8 @@ on:
     paths-ignore:
       - '**.rst'
       - '.gitignore'
+      - 'LICENCE'
+      - 'licence_*'
 
 jobs:
   build_images:
