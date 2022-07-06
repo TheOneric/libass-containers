@@ -23,7 +23,7 @@ apt-get install -y \
     sudo bash curl ca-certificates tar gzip bzip2 \
     make gcc g++ pkg-config libexpat1-dev \
     nasm libtool libpng-dev \
-    libubsan0 libasan3 \
+    libpng-dev libubsan0 libasan3 \
     git automake1.11 autoconf2.64
 apt-get clean
 
