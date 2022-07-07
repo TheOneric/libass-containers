@@ -51,3 +51,5 @@ tarball_build fontconfig "$urlfmt" "2.10.92"
 # Clean up
 cd /
 rm -fr /tmp/build
+
+sudo ldconfig
