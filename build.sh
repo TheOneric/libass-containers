@@ -15,6 +15,12 @@ tarball_build() (
     version="$3"
     shift 3
 
+    # Cosmetic print to make logs easier to read
+    txt="$(printf 'Building %s' "$name")"
+    txtlen="$(printf '%s' "$txt" | wc -m)"
+    printf '\n\n%s\n%.*s\n' "$txt" "$txtlen" \
+        "================================================================================"
+
     # Add --insecure if installed certs become too old, to ignore verification errors
     curl --location "$url" > "$filename"
     tar xf "$filename"
