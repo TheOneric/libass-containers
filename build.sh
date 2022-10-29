@@ -48,6 +48,11 @@ tarball_build harfbuzz "$urlfmt" "1.2.3"
 urlfmt='https://www.freedesktop.org/software/fontconfig/release/fontconfig-%s.tar.bz2'
 tarball_build fontconfig "$urlfmt" "2.10.92"
 
+## libunibreak
+### libunibreak moved to GitHub with version 3.0. All prior release tarballs are only on sourceforge
+urlfmt="https://sourceforge.net/projects/vimgadgets/files/libunibreak/1.1/libunibreak-%s.tar.gz/download"
+tarball_build libunibreak "$urlfmt" "1.1"
+
 # Clean up
 cd /
 rm -fr /tmp/build
